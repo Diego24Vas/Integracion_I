@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Estacionamiento</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { width: 50%; margin: 20px auto; border-collapse: collapse; }
+        table, th, td { border: 1px solid black; }
+        th, td { padding: 10px; text-align: center; }
+        .btn { padding: 5px 10px; margin: 5px; cursor: pointer; }
+        .btn-reserve { background-color: #4CAF50; color: white; }
+        .btn-release { background-color: #f44336; color: white; }
+        .btn-add { background-color: #2196F3; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Gestión de Estacionamiento</h1>
+    <a href="{{ url_for('add_space') }}" class="btn btn-add">Añadir Espacio</a>
+    <a href="{{ url_for('add_vehicle') }}" class="btn btn-add">Añadir Vehículo</a>
+    <table>
+        <thead>
+            <tr>
+                <th>Espacio</th>
+                <th>Estado</th>
+                <th>Discapacitado</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for space, details in spaces.items() %}
+            <tr>
+                <td>{{ space }}</td>
+                <td>{{ details['estado'] }}</td>
+                <td>{{ 'Sí' if details['discapacitado'] else 'No' }}</td>
+                <td>
+                    {% if details['estado'] == 'Libre' %}
+                    <form action="{{ url_for('add_vehicle') }}" method="post">
+                        <button type="submit" class="btn btn-reserve">Reservar</button>
+                    </form>
+                    {% else %}
+                    <form action="{{ url_for('release', space_id=space) }}" method="post">
+                        <button type="submit" class="btn btn-release">Liberar</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2>Vehículos Registrados</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Propietario</th>
+                <th>Patente</th>
+                <th>Espacio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for vehicle in vehicles %}
+            <tr>
+                <td>{{ vehicle['owner_name'] }}</td>
+                <td>{{ vehicle['vehicle_plate'] }}</td>
+                <td>{{ vehicle['parking_space'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
