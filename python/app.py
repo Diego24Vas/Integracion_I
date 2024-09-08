@@ -1,17 +1,27 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='../templates')
+
+# Carpeta de imágenes estáticas
+app.config['UPLOAD_FOLDER'] = 'recursos'
 
 # Datos de ejemplo
 parking_spaces = {
-    'A1': {'estado': 'Libre', 'discapacitado': False},
-    'A2': {'estado': 'Ocupado', 'discapacitado': False},
-    'B1': {'estado': 'Libre', 'discapacitado': True},
-    'B2': {'estado': 'Ocupado', 'discapacitado': False}
+    'A1': {'estado': 'Libre', 'discapacitado': False, 'sector': 'A'},
+    'A2': {'estado': 'Ocupado', 'discapacitado': False, 'sector': 'A'},
+    'B1': {'estado': 'Libre', 'discapacitado': True, 'sector': 'B'},
+    'B2': {'estado': 'Ocupado', 'discapacitado': False, 'sector': 'B'}
 }
 
 # Datos de vehículos
 vehicles = []
+
+# URLs de imágenes de los sectores
+sector_images = {
+    'A': 'sector_a.jpg',
+    'B': 'sector_b.jpg'
+}
 
 @app.route('/')
 def index():
@@ -23,8 +33,9 @@ def add_space():
         space_id = request.form['space_id']
         state = request.form['state']
         disabled = 'disabled' in request.form
+        sector = request.form['sector']
         if space_id not in parking_spaces:
-            parking_spaces[space_id] = {'estado': state, 'discapacitado': disabled}
+            parking_spaces[space_id] = {'estado': state, 'discapacitado': disabled, 'sector': sector}
         return redirect(url_for('index'))
     return render_template('add_space.html')
 
@@ -51,6 +62,16 @@ def release(space_id):
         global vehicles
         vehicles = [v for v in vehicles if v['parking_space'] != space_id]
     return redirect(url_for('index'))
+
+@app.route('/get_location', methods=['GET'])
+def get_location():
+    sector = request.args.get('sector')
+    image_filename = sector_images.get(sector)
+    image_url = url_for('static_files', filename=image_filename) if image_filename else None
+    return render_template('add_space.html', image_url=image_url)
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 if __name__ == '__main__':
     app.run(debug=True)
