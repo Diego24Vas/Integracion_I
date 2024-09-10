@@ -28,20 +28,20 @@
         </thead>
         <tbody>
             <!-- Recorre los espacios de estacionamiento y muestra su estado -->
-            {mostrará una lista con los estados de los espacios}
+            mostrará una lista con los estados de los espacios
             <tr>
                 <td></td>
                 <td></td>
-                <td>
+                <td></td>
                 <td>
                     <!-- Si el espacio está libre, muestra el botón para reservar -->
                     
-                    <form action="{{('anadir_vehiculo') }}" method="get">
+                    <form action="{{('anadir_vehiculo') }}.html" method="get">
                         <button type="submit" class="btn btn-reservar">Reservar</button>
                     </form>
                     <!-- Si el espacio está ocupado, muestra el botón para liberar -->
                  
-                    <form action="{{('anadir_espacio') }}" method="post">
+                    <form action="{{('anadir_espacio') }}.html" method="post">
                         <button type="submit" class="btn btn-liberar">Liberar</button>
                     </form>
                 </td>
@@ -50,7 +50,7 @@
     </table>
 
     <h2>Vehículos Registrados</h2>
-    {mostrará una lista con los detalles de los registros}
+    mostrará una lista con los detalles de los registros
     <table>
         <thead>
             <tr>
