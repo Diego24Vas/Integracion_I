@@ -4,21 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Estacionamiento</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        table { width: 50%; margin: 20px auto; border-collapse: collapse; }
-        table, th, td { border: 1px solid black; }
-        th, td { padding: 10px; text-align: center; }
-        .btn { padding: 5px 10px; margin: 5px; cursor: pointer; }
-        .btn-reserve { background-color: #4CAF50; color: white; }
-        .btn-release { background-color: #f44336; color: white; }
-        .btn-add { background-color: #2196F3; color: white; }
-    </style>
+    <link rel="stylesheet" href="styles.css" hreflang="clock.js">
 </head>
 <body>
+    <div id="clock"></div>
+
     <h1>Gestión de Estacionamiento</h1>
     <a href="{{ url_for('add_space') }}" class="btn btn-add">Añadir Espacio</a>
     <a href="{{ url_for('add_vehicle') }}" class="btn btn-add">Añadir Vehículo</a>
+    <a href="cambio_turno.html" class="btn btn-turno">Cambio Turno</a>
     <table>
         <thead>
             <tr>
@@ -68,5 +62,7 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <script src="clock.js"></script>
 </body>
 </html>
