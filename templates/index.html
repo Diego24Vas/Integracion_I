@@ -17,8 +17,6 @@
 </head>
 <body>
     <h1>Gestión de Estacionamiento</h1>
-    <a href="{{ url_for('add_space') }}" class="btn btn-add">Añadir Espacio</a>
-    <a href="{{ url_for('add_vehicle') }}" class="btn btn-add">Añadir Vehículo</a>
     <table>
         <thead>
             <tr>
@@ -35,15 +33,14 @@
                 <td>{{ details['estado'] }}</td>
                 <td>{{ 'Sí' if details['discapacitado'] else 'No' }}</td>
                 <td>
-                    {% if details['estado'] == 'Libre' %}
-                    <form action="{{ url_for('add_vehicle') }}" method="post">
-                        <button type="submit" class="btn btn-reserve">Reservar</button>
+                    <form action="{{('anadir_vehiculo') }}.html" method="get">
+                        <button type="submit" class="btn btn-reservar">Reservar</button>
                     </form>
-                    {% else %}
-                    <form action="{{ url_for('release', space_id=space) }}" method="post">
-                        <button type="submit" class="btn btn-release">Liberar</button>
+                    <!-- Si el espacio está ocupado, muestra el botón para liberar -->
+                 
+                    <form action="{{('anadir_espacio') }}.html" method="post">
+                        <button type="submit" class="btn btn-liberar">Liberar</button>
                     </form>
-                    {% endif %}
                 </td>
             </tr>
             {% endfor %}
